@@ -12,7 +12,7 @@ public class UserScoreTest {
     private UserScore homeWinner, awayWinner, tied;
 
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         long id  = new Random().nextLong();
         homeWinner = new UserScore(id, 2,1);
