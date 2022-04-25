@@ -4,7 +4,7 @@ import com.ScoreReceiver.DTOs.UserScoreDTO;
 import com.ScoreReceiver.domain.UserScore;
 import com.ScoreReceiver.errors.IllegalTeamScoreException;
 import com.ScoreReceiver.errors.NoSuchMatchException;
-import com.ScoreReceiver.errors.ScoreTimeCreationException;
+import com.ScoreReceiver.errors.ScoreUpsertTimeException;
 import com.ScoreReceiver.infrastructure.MatchRepository;
 import com.ScoreReceiver.infrastructure.UserScoreRepository;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class UserScoreService {
     }
 
     public void createNewScore(UserScoreDTO userScoreDTO)
-            throws NoSuchMatchException, IllegalTeamScoreException, ScoreTimeCreationException {
+            throws NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
         long matchId = userScoreDTO.getMatchId();
         validateTeamScores(userScoreDTO);
         validateTimeOfCreation(userScoreDTO);
@@ -36,7 +36,7 @@ public class UserScoreService {
         if (userScoreDTO.getHomeTeamScore()<0||userScoreDTO.getAwayTeamScore()<0) throw new IllegalTeamScoreException("Teams score cannot be less than 0");
     }
 
-    public void validateTimeOfCreation(UserScoreDTO userScoreDTO) throws ScoreTimeCreationException {
+    public void validateTimeOfCreation(UserScoreDTO userScoreDTO) throws ScoreUpsertTimeException {
         //TODO implement error when new score is created less than 15 mins before match
     }
 

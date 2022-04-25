@@ -5,7 +5,7 @@ import com.ScoreReceiver.DTOs.UserScoreDTO;
 import com.ScoreReceiver.domain.UserScore;
 import com.ScoreReceiver.errors.IllegalTeamScoreException;
 import com.ScoreReceiver.errors.NoSuchMatchException;
-import com.ScoreReceiver.errors.ScoreTimeCreationException;
+import com.ScoreReceiver.errors.ScoreUpsertTimeException;
 import com.ScoreReceiver.service.UserScoreService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class UserScoreController{
     //TODO is it better to throw an exception or answer with a 400 error code???
     @ResponseStatus(HttpStatus.CREATED)
     public void createNewScore(@RequestBody UserScoreDTO userScoreDTO)
-            throws NoSuchMatchException, IllegalTeamScoreException, ScoreTimeCreationException {
+            throws NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
         userScoreService.createNewScore(userScoreDTO);
     }
 }
