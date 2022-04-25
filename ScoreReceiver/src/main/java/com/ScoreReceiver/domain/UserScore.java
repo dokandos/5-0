@@ -1,11 +1,9 @@
 package com.ScoreReceiver.domain;
 
-import com.ScoreReceiver.DTOs.UserScoreDTO;
-import com.ScoreReceiver.errors.IllegalTeamScoreException;
-import com.ScoreReceiver.errors.ScoreTimeCreationException;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -15,7 +13,7 @@ public class UserScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long userId; //Replace with User?
+    private long userId; //TODO Replace with User?
 
     @ManyToOne
     private long matchId;
@@ -24,11 +22,22 @@ public class UserScore {
     private int awayTeamScore;
     private int difference;
     private Winner winnerTeam;
+    private Timestamp timestamp;
+
+    public UserScore(long matchId, int homeTeamScore, int awayTeamScore, Timestamp timestamp) {
+        this.matchId = matchId;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
+        this.timestamp = timestamp;
+        this.difference = Math.abs(homeTeamScore-awayTeamScore);
+        setWinnerTeamFromScores(homeTeamScore, awayTeamScore);
+    }
 
     public UserScore(long matchId, int homeTeamScore, int awayTeamScore) {
         this.matchId = matchId;
         this.homeTeamScore = homeTeamScore;
         this.awayTeamScore = awayTeamScore;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
         this.difference = Math.abs(homeTeamScore-awayTeamScore);
         setWinnerTeamFromScores(homeTeamScore, awayTeamScore);
     }
