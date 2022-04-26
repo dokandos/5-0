@@ -20,7 +20,7 @@ public class UserScoreService {
     private final MatchRepository matchRepository;
 
     public List<UserScore> getScoresForMatch(long matchId) {
-        return userScoreRepository.findByMatchId();
+        return userScoreRepository.findByMatchId(matchId);
     }
 
     public void createNewScore(UserScoreDTO userScoreDTO)
