@@ -3,6 +3,7 @@ package com.ScoreReceiver.service;
 import com.ScoreReceiver.DTOs.UserScoreDTO;
 import com.ScoreReceiver.domain.Match;
 import com.ScoreReceiver.errors.IllegalTeamScoreException;
+import com.ScoreReceiver.errors.ScoreUpsertTimeException;
 import com.ScoreReceiver.infrastructure.MatchRepository;
 import com.ScoreReceiver.infrastructure.UserScoreRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -74,23 +76,31 @@ class UserScoreServiceTest {
 
         assertThatThrownBy(() -> {
             UserScoreDTO underTest = new UserScoreDTO(randomMatchId, randomHomeTeamScore, 0);
-            userScoreService.createNewScore(underTest); //TODO replace with method validateTeamScores ?
+            userScoreService.validateTeamScores(underTest);
         }).isInstanceOf(IllegalTeamScoreException.class);
 
         assertThatThrownBy(() -> {
             UserScoreDTO underTest = new UserScoreDTO(randomMatchId, 0, randomAwayTeamScore);
-            userScoreService.createNewScore(underTest);//TODO replace with method validateTeamScores ?
+            userScoreService.validateTeamScores(underTest);
         }).isInstanceOf(IllegalTeamScoreException.class);
 
         assertThatThrownBy(() -> {
             UserScoreDTO underTest = new UserScoreDTO(randomMatchId, randomHomeTeamScore, randomAwayTeamScore);
-            userScoreService.createNewScore(underTest);//TODO replace with method validateTeamScores ?
+            userScoreService.validateTeamScores(underTest);
         }).isInstanceOf(IllegalTeamScoreException.class);
     }
 
     @Test
     void itShouldThrowExceptionWhenScoreUpsertCloseToMatchTime() {
-//        Date tenMinutesBeforeMatch
+        long randomMatchId = 0L;
+        int randomHomeTeamScore = random.nextInt(14)*(-1)-1; //Negative
+        int randomAwayTeamScore = random.nextInt(14)*(-1)-1; //Negative
+        Timestamp tenMinutesBeforeMatch = new Timestamp(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(10));
+
+        assertThatThrownBy(() -> {
+            UserScoreDTO underTest = new UserScoreDTO(randomMatchId, randomHomeTeamScore, randomAwayTeamScore, tenMinutesBeforeMatch);
+            userScoreService.validateTimeOfUpsert(underTest, match);
+        }).isInstanceOf(ScoreUpsertTimeException.class);
     }
 
 /*    @Test
