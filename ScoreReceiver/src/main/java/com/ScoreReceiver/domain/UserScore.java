@@ -15,7 +15,7 @@ public class UserScore {
 
     private long userId; //TODO Replace with User?
 
-    @ManyToOne
+//    @ManyToOne
     private long matchId;
 
     private int homeTeamScore;
