@@ -69,8 +69,8 @@ class UserScoreServiceTest {
     @Test
     void itShouldNotCreateUserScoreDueToNegativeScores(){
         long randomMatchId = 0L;
-        int randomHomeTeamScore = random.nextInt(14)*(-1)+1; //Negative
-        int randomAwayTeamScore = random.nextInt(14)*(-1)+1; //Negative
+        int randomHomeTeamScore = random.nextInt(14)*(-1)-1; //Negative
+        int randomAwayTeamScore = random.nextInt(14)*(-1)-1; //Negative
 
         assertThatThrownBy(() -> {
             UserScoreDTO underTest = new UserScoreDTO(randomMatchId, randomHomeTeamScore, 0);
