@@ -13,11 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @AllArgsConstructor
 public class UserScoreService {
 
+    public static final int LIMIT_BEFORE_MATCH_MINUTES = 15;
     private final UserScoreRepository userScoreRepository;
     private final MatchRepository matchRepository;
 
@@ -39,11 +41,10 @@ public class UserScoreService {
     }
 
     public void validateTimeOfUpsert(UserScoreDTO userScoreDTO, Match match) throws ScoreUpsertTimeException {
-        //TODO implement error when new score is created less than 15 mins before match
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp upsert = userScoreDTO.getTimestamp();
+        Timestamp limitUpsertTimeStamp = new Timestamp(match.getTimestamp().getTime() - TimeUnit.MINUTES.toMillis(LIMIT_BEFORE_MATCH_MINUTES));
 
-
-
+        if (limitUpsertTimeStamp.compareTo(upsert)<0) throw new ScoreUpsertTimeException("Cannot create or modify match due to time restrictions");
     }
 
 }
