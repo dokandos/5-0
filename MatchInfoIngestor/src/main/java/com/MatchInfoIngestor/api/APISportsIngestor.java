@@ -40,7 +40,7 @@ public class APISportsIngestor {
         this.leagueResponse = leagueResponse;
     }
 
-    //TODO improve performance
+    //TODO switch to Feign or remove .block() statement.
     public JsonNode getJsonNode(String uri) {
         return webClient
                 .get()
