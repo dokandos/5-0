@@ -16,7 +16,7 @@ public class UserScore {
     private long userId; //TODO Replace with User?
 
 //    @ManyToOne
-    private long matchId;
+    private long matchId; //TODO create new module for matches?
 
     private int homeTeamScore;
     private int awayTeamScore;
