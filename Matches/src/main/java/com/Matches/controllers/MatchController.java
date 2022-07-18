@@ -1,6 +1,7 @@
 package com.Matches.controllers;
 
 import com.Matches.domain.Match;
+import com.Matches.errors.NoSuchMatchException;
 import com.Matches.infrastructure.TournamentRepository;
 import com.Matches.service.MatchService;
 import lombok.AllArgsConstructor;
@@ -16,20 +17,20 @@ public class MatchController {
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Match getSingleMatch(@PathVariable long matchId) {
-
+    public Match getSingleMatch(@PathVariable long matchId) throws NoSuchMatchException {
+        return matchService.getMatchById(matchId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Match createMatch(@RequestBody Match match) {
-
+    public void createMatch(@RequestBody Match match) {
+        matchService.createNewMatch(match);
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Match modifyMatch(@RequestBody Match match) {
-
-    }
+//    @PutMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public Match modifyMatch(@RequestBody Match match) {
+//
+//    }
 
 }

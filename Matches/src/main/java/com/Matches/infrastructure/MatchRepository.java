@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface MatchRepository extends JpaRepository<Match, Long> {
     @Modifying
-    @Query("UPDATE match SET homeTeamScore = ?1, awayTeamScore = ?2, finished = ?3 WHERE id = ?4")
+    @Query(value = "UPDATE Match m SET m.homeTeamScore = ?1, m.awayTeamScore = ?2, m.finished = ?3 WHERE m.id = ?4")
     boolean modifyMatchScore(int homeTeamScore, int awayTeamScore, boolean finished, long matchId);
 
-    List<Match> findByLeagueId(int leagueId);
+    List<Match> findById(int tournamentId);
 
     List<Match> findByFinished(boolean b);
 }

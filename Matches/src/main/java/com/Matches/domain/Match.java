@@ -11,9 +11,10 @@ public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long matchId;
+    @Column(name = "match_id")
+    private long id;
     @ManyToOne()
-    @JoinColumn(name="tournamentId", nullable = false)
+    @JoinColumn(name="tournament_id", nullable = false)
     private Tournament tournament;
     private String homeTeam;
     private String awayTeam;

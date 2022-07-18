@@ -3,13 +3,13 @@ package com.Matches.service;
 import com.Matches.domain.Match;
 import com.Matches.domain.Tournament;
 import com.Matches.errors.NoSuchMatchException;
+import com.Matches.errors.NoSuchTournamentException;
 import com.Matches.infrastructure.MatchRepository;
 import com.Matches.infrastructure.TournamentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +30,7 @@ public class MatchService {
     }
 
     public List<Match> getMatchesForLeagueId(int leagueId) {
-        return matchRepository.findByLeagueId(leagueId);
+        return matchRepository.findById(leagueId);
     }
 
     public List<Match> getUnfinishedMatches() {
@@ -50,16 +50,22 @@ public class MatchService {
     /*
      * Methods for touramentRepository
      * */
-    public Optional<Tournament> findTournamentById(long id) {
-        return tournamentRepository.findById(id);
+    public Tournament findTournamentById(long id) throws NoSuchTournamentException {
+        return tournamentRepository.findById(id).orElseThrow(() -> new NoSuchTournamentException(id));
     }
 
     public void createNewTournament(Tournament tournament){
-        if (findTournamentById(tournament.getTournamentId()).isPresent()) return;
-        else tournamentRepository.save(tournament);
+
+        try {
+            findTournamentById(tournament.getId());
+        }
+        catch(NoSuchTournamentException e) {
+            tournamentRepository.save(tournament);
+        }
     }
 
-    public List<Match> getMatchesByTournamentId(long id) {
-        return tournamentRepository.findByTournamentId(id);
-    }
+
+//    public List<Match> getMatchesByTournamentId(long id) {
+//        return tournamentRepository.findById(id);
+//    }
 }

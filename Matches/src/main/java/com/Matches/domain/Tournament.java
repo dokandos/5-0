@@ -9,9 +9,11 @@ import java.util.List;
 @Entity
 public class Tournament {
     @Id
-    private long tournamentId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tournament_id")
+    private long id;
     private String name;
-    @OneToMany(mappedBy = "matchId")
+    @OneToMany(mappedBy = "tournament")
     private List<Match> matches;
     private boolean finished;
 }
