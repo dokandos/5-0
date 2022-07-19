@@ -1,5 +1,6 @@
 package com.ScoreReceiver.domain;
 
+import com.ScoreReceiver.DTOs.UserScoreDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -46,6 +47,14 @@ public class UserScore {
         if (homeTeamScore>awayTeamScore)      winnerTeam = Winner.HOME;
         else if (homeTeamScore<awayTeamScore) winnerTeam = Winner.AWAY;
         else                                  winnerTeam = Winner.TIE;
+    }
+
+    public void modifyScore(UserScoreDTO userScoreDTO) {
+        this.homeTeamScore = userScoreDTO.getHomeTeamScore();
+        this.awayTeamScore = userScoreDTO.getAwayTeamScore();
+        this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.difference = Math.abs(this.homeTeamScore-this.awayTeamScore);
+        setWinnerTeamFromScores(homeTeamScore, awayTeamScore);
     }
 
 

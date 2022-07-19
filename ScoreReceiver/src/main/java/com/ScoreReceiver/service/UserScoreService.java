@@ -5,6 +5,7 @@ import com.ScoreReceiver.domain.Match;
 import com.ScoreReceiver.domain.UserScore;
 import com.ScoreReceiver.errors.IllegalTeamScoreException;
 import com.ScoreReceiver.errors.NoSuchMatchException;
+import com.ScoreReceiver.errors.NoSuchScoreException;
 import com.ScoreReceiver.errors.ScoreUpsertTimeException;
 import com.ScoreReceiver.infrastructure.MatchRepository;
 import com.ScoreReceiver.infrastructure.UserScoreRepository;
@@ -47,4 +48,15 @@ public class UserScoreService {
         if (limitUpsertTimeStamp.compareTo(upsert)<0) throw new ScoreUpsertTimeException("Cannot create or modify match due to time restrictions");
     }
 
+    public UserScore modifyScore(UserScoreDTO userScoreDTO, long scoreId)
+            throws NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException, NoSuchScoreException {
+        long matchId = userScoreDTO.getMatchId();
+        Match match = matchRepository.findById(matchId).orElseThrow(() -> new NoSuchMatchException("Match id " + matchId  + " not found"));
+        validateTeamScores(userScoreDTO);
+        validateTimeOfUpsert(userScoreDTO, match);
+
+        UserScore userScore = userScoreRepository.findById(scoreId).orElseThrow(() -> new NoSuchScoreException("Score id " + scoreId + " not found"));
+        userScore.modifyScore(userScoreDTO);
+        return userScoreRepository.save(userScore);
+    }
 }
