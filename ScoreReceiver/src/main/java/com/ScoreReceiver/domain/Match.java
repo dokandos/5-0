@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -18,12 +18,12 @@ public class Match {
 
     private String homeTeam;
     private String awayTeam;
-    private Date date;
+    private Timestamp timestamp;
     private Winner winner;
 
-    public Match(String homeTeam, String awayTeam, Date date){
+    public Match(String homeTeam, String awayTeam, Timestamp timestamp){
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
-        this.date = date;
+        this.timestamp = timestamp;
     }
 }
