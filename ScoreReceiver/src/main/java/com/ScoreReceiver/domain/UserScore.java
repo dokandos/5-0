@@ -8,11 +8,10 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class UserScore {
+public class UserScore{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
     private long userId; //TODO Replace with User?
 
@@ -25,16 +24,20 @@ public class UserScore {
     private Winner winnerTeam;
     private Timestamp timestamp;
 
-    public UserScore(long matchId, int homeTeamScore, int awayTeamScore, Timestamp timestamp) {
+    public UserScore(long userId, long matchId, int homeTeamScore, int awayTeamScore, Timestamp timestamp) {
+        this.userId = userId;
         this.matchId = matchId;
         this.homeTeamScore = homeTeamScore;
         this.awayTeamScore = awayTeamScore;
         this.timestamp = timestamp;
         this.difference = Math.abs(homeTeamScore-awayTeamScore);
         setWinnerTeamFromScores(homeTeamScore, awayTeamScore);
+
+        this.id = ScoreIdGenerator.generateId(this.matchId, this.userId);
     }
 
-    public UserScore(long matchId, int homeTeamScore, int awayTeamScore) {
+    public UserScore(long userId, long matchId, int homeTeamScore, int awayTeamScore) {
+        this.userId = userId;
         this.matchId = matchId;
         this.homeTeamScore = homeTeamScore;
         this.awayTeamScore = awayTeamScore;

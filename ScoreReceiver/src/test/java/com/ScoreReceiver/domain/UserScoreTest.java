@@ -14,10 +14,11 @@ public class UserScoreTest {
 
     @BeforeEach
     void setUp() {
-        long id  = new Random().nextLong();
-        homeWinner = new UserScore(id, 2,1);
-        awayWinner = new UserScore(id, 4, 5);
-        tied = new UserScore(id, 0,0);
+        long userId  = new Random().nextLong();
+        long matchId  = new Random().nextLong();
+        homeWinner = new UserScore(userId, matchId, 2,1);
+        awayWinner = new UserScore(userId, matchId, 4, 5);
+        tied = new UserScore(userId, matchId, 0,0);
     }
 
     @Test

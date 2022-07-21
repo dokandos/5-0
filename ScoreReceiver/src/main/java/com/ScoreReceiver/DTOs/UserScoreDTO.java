@@ -1,5 +1,6 @@
 package com.ScoreReceiver.DTOs;
 
+import com.ScoreReceiver.domain.ScoreIdGenerator;
 import com.ScoreReceiver.domain.UserScore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
-public class UserScoreDTO {
+public class UserScoreDTO{
 
     private long matchId;
     private int homeTeamScore;
@@ -22,7 +23,7 @@ public class UserScoreDTO {
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public UserScore mapToUserScore(){
-        return new UserScore(matchId, homeTeamScore, awayTeamScore, timestamp);
+    public UserScore mapToUserScore(long userId){
+        return new UserScore(userId, matchId, homeTeamScore, awayTeamScore, timestamp);
     }
 }

@@ -32,19 +32,30 @@ public class UserScoreController{
     //TODO is it better to throw an exception or answer with a 400 error code???
     @ResponseStatus(HttpStatus.CREATED)
     @ExceptionHandler()//TODO complete exception handler
-    public void createNewScore(@RequestBody UserScoreDTO userScoreDTO)
+    public void createNewScore(@RequestBody UserScoreDTO userScoreDTO, @RequestParam long userId)
             throws NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
-        userScoreService.createNewScore(userScoreDTO);
+        userScoreService.createNewScore(userScoreDTO, userId);
     }
 
-    @PutMapping(path = "/modifyScore/{scoreId}")
+    @PutMapping()
     //TODO Figure out what was the second parameter
-    public ResponseEntity<UserScore> modifyScore(@RequestBody UserScoreDTO userScoreDTO, @PathVariable long scoreId)
+    public ResponseEntity<UserScore> modifyScore(@RequestBody UserScoreDTO userScoreDTO, @PathVariable String scoreId)
             throws NoSuchScoreException, NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
         return new ResponseEntity<>(userScoreService.modifyScore(userScoreDTO, scoreId), HttpStatus.CREATED);
     }
 
     //TODO implement create and modify for multiple scores.
-    public void createNewScores();
-    public ResponseEntity<List<UserScore>> modifyScores();
+    @PostMapping
+    //TODO is it better to throw an exception or answer with a 400 error code???
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createNewScores(@RequestBody List<UserScoreDTO> userScoresDTO, @RequestParam long userId)
+            throws NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
+        userScoreService.createNewScores(userScoresDTO, userId);
+    }
+
+    @PutMapping()
+    public ResponseEntity<List<UserScore>> modifyScores(@RequestBody List<UserScoreDTO> userScoresDTO, @RequestParam long userId)
+            throws NoSuchScoreException, NoSuchMatchException, IllegalTeamScoreException, ScoreUpsertTimeException {
+        return new ResponseEntity<>(userScoreService.modifyScores(userScoresDTO, userId), HttpStatus.OK);
+    }
 }

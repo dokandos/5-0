@@ -46,18 +46,19 @@ class UserScoreServiceTest {
 
         when(matchRepository.findById(0L)).thenReturn(Optional.of(match));
 
+        long randomUserId = 0L;
         long randomMatchId = 0L;
         int randomHomeTeamScore = random.nextInt(15);
         int randomAwayTeamScore = random.nextInt(15);
 
         assertThatNoException().isThrownBy(() -> {
             UserScoreDTO userScoreDTO = new UserScoreDTO(randomMatchId, randomHomeTeamScore, randomAwayTeamScore);
-            userScoreService.createNewScore(userScoreDTO);
+            userScoreService.createNewScore(userScoreDTO, randomUserId);
         });
 
         assertThatNoException().isThrownBy(() -> {
             UserScoreDTO userScoreDTO = new UserScoreDTO(randomMatchId, 0, 0);
-            userScoreService.createNewScore(userScoreDTO);
+            userScoreService.createNewScore(userScoreDTO, randomUserId);
         });
 
         verify(matchRepository, times(2)).findById(randomMatchId);
